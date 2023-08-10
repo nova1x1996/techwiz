@@ -42,7 +42,7 @@ class LoginProvider extends ChangeNotifier {
       }
 
     } catch (e) {
-      setLoading(true);
+      setLoading(false);
       //Xuất hiện Popup " Đổi IP khác Wifi khác cho người dùngs"
       print(e);
     }
