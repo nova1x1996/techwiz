@@ -14,7 +14,7 @@ class BackgroundLogoWidget extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('lib/assets/images/background.png'),
+                  image: AssetImage('assets/images/Login/backgroundLogin.jpg'),
                   fit: BoxFit.fill)),
           child: SingleChildScrollView(
               child: Column(
@@ -26,12 +26,14 @@ class BackgroundLogoWidget extends StatelessWidget {
                       child: Container(
                         width: 100, // Định nghĩa chiều rộng
                         height: 100, // Định nghĩa chiều cao
-                        child: Image.asset('lib/assets/images/logo.png'),
+                        child: ClipOval(
+                          child: Image.asset('assets/images/Logo/newLogo.jpg'),
+                        ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 50),
+                    padding:  EdgeInsets.symmetric(horizontal: 40),
                     child: bodycontent,
                   )
                 ],

@@ -37,7 +37,7 @@ class _LoginMainState extends State<LoginMain> {
               width: double.infinity,
               child: Text(
                 "Quên mật khẩu",
-                style: TextStyle(fontSize: 14, color: buttonColor),
+                style: TextStyle(fontSize: 14, color: primaryColor),
               ),
               alignment: Alignment.centerRight),
           InkWell(
@@ -59,7 +59,7 @@ class _LoginMainState extends State<LoginMain> {
                   ),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: buttonColor,
+                      color: secondaryGreen,
                       borderRadius: BorderRadius.circular(5))),
             ),
           ),
@@ -81,10 +81,10 @@ class _LoginMainState extends State<LoginMain> {
           Center(
               child: RichText(
                   text: TextSpan(
-                      style: TextStyle(fontSize: 14, color: Colors.black),
+                      style: TextStyle(fontSize: 14, color: Colors.white),
                       children: [
                 TextSpan(text: 'Bạn chưa có tài khoản?'),
-                TextSpan(text: ' Đăng ký', style: TextStyle(color: buttonColor))
+                TextSpan(text: ' Đăng ký', style: TextStyle(color: primaryOrange))
               ])))
         ],
       ),

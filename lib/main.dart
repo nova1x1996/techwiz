@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Techwiz 4 Mobile',
-          initialRoute: '/Register',
+          initialRoute: '/ForgotPassword',
           routes: {
             '/': (context) => const DiscoveryPage(),
             '/ResetPassword':(context) => ResetPassword(),
