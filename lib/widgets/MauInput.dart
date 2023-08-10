@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget MauInput(String label,String placeholder,TextEditingController controller){
+Widget MauInput({required String label,required String placeholder, required TextEditingController controller}){
   return Padding(
     padding: const EdgeInsets.only(bottom: 15),
     child: Column(

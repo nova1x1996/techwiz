@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/widgets/MauInput.dart';
 
 import 'BackgroundLogoWidget.dart';
 import 'AuthorizationCode.dart';
@@ -37,11 +38,7 @@ class ForgotPassword extends StatelessWidget {
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 32),
-                child: TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    hintText: 'Số điện thoại hoặc email',
-                  ),
+                child: MauInput(controller: emailController,label: "",placeholder: "So dien thoai hoac email"
                 ),
               ),
               SizedBox(height: 16),

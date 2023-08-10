@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../constants/colors.dart';
+
 class InforAccount extends StatefulWidget {
   const InforAccount({super.key});
 
@@ -16,6 +18,9 @@ class _InforAccountState extends State<InforAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+        backgroundColor: primaryGreen,
+      ),
       resizeToAvoidBottomInset: false,
       body: Container(
         width: double.infinity,
@@ -29,35 +34,6 @@ class _InforAccountState extends State<InforAccount> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25.0),
-                    bottomRight: Radius.circular(25.0),
-                  ),
-                ),
-                child: PreferredSize(
-                  preferredSize: Size.fromHeight(100.0),
-                  child: AppBar(
-                      title: Text(
-                        "Thú cưng của bạn",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      leading: IconButton(
-                        icon: Icon(Icons.arrow_back_ios),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      backgroundColor: Color(0xFFF07869),
-                      elevation: 0,
-                      toolbarHeight: 90.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      )
-                  ),
-                ),
-              ),
               SizedBox(height: 20.0),
               Container(
                 alignment: Alignment.center,
@@ -335,7 +311,7 @@ class _InforAccountState extends State<InforAccount> {
                         child: Text("Lưu Thông Tin"),
                         style: ElevatedButton.styleFrom(
                             minimumSize: Size(310.0, 40.0),
-                            backgroundColor: Color(0xFFE94834)
+                            backgroundColor: primaryGreen,
                         ),
                       ),
                     ),

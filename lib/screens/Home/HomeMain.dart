@@ -25,12 +25,12 @@ class _HomeMainState extends State<HomeMain> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 50,
+              height: resHeight * 0.060,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: 5,
                 itemBuilder: (context, index) => Container(
-                  width: 50,
+                  width: resWidth * 0.127,
                   height: 50,
                   decoration: BoxDecoration(
                       color: Colors.blueAccent,

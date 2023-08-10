@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget GachNgangCoChuOGiua(String content){
   return  Container(
-    color: Colors.white, // Màu nền cho Container
+    color: Colors.transparent, // Màu nền cho Container
     child: Row(
       children: <Widget>[
         Expanded(
