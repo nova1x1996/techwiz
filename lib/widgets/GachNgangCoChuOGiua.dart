@@ -7,7 +7,7 @@ Widget GachNgangCoChuOGiua(String content){
       children: <Widget>[
         Expanded(
           child: Divider(
-            color: Colors.black, // Màu của gạch ngang
+            color: Colors.white, // Màu của gạch ngang
             thickness: 1, // Độ dày của gạch ngang
           ),
         ),
@@ -16,7 +16,7 @@ Widget GachNgangCoChuOGiua(String content){
           child: Text(
             content,
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white ,
                 fontSize: 12
 
             ),
@@ -24,7 +24,7 @@ Widget GachNgangCoChuOGiua(String content){
         ),
         Expanded(
           child: Divider(
-            color: Colors.black,
+            color: Colors.white,
             thickness: 1,
           ),
         ),

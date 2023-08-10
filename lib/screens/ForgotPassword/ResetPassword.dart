@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/constants/colors.dart';
+import 'package:mobile_app/widgets/MauInput.dart';
 
 import '../StoreProduct/StoreApp.dart';
 import 'BackgroundLogoWidget.dart';
-
 
 class ResetPassword extends StatefulWidget {
   @override
@@ -26,19 +27,17 @@ class _ResetPasswordState extends State<ResetPassword> {
           children: [
             Text(
               'Đặt lại mật khẩu',
-              style: TextStyle(fontSize: 30),
+              style: TextStyle(fontSize: 30, color: primaryColor),
             ),
             SizedBox(height: 16),
 
             // Input "Mật khẩu mới"
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 32),
-              child: TextField(
+              child: MauInput(
                 controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'Mật khẩu mới',
-                ),
+                label: 'Mật khẩu mới',
+                placeholder: 'Mật khẩu mới',
               ),
             ),
             SizedBox(height: 16),
@@ -46,13 +45,11 @@ class _ResetPasswordState extends State<ResetPassword> {
             // Input "Nhập lại mật khẩu mới"
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 32),
-              child: TextField(
+              child: MauInput(
                 controller: confirmPasswordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'Nhập lại mật khẩu mới',
-                  errorText: errorText,
-                ),
+                label: 'Nhập lại mật khẩu mới',
+                placeholder: 'Nhập lại mật khẩu mới',
+                // errorText: errorText;
               ),
             ),
             SizedBox(height: 16),
@@ -78,7 +75,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE94834), // Màu RGB (233, 72, 52)
+                backgroundColor: secondaryGreen,
+                minimumSize: Size(350.507 - 64, 48), // Màu RGB (233, 72, 52)
               ),
               child: Text('Xác nhận'),
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-
+import '../../constants/colors.dart';
 import 'BackgroundLogoWidget.dart';
 import 'AuthorizationCode.dart';
 import 'ResetPassword.dart'; // Import trang NhapMaXacThuc
@@ -16,6 +16,8 @@ class _AuthorizationCodeState extends State<AuthorizationCode> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return BackgroundLogoWidget(
       bodycontent: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -23,13 +25,13 @@ class _AuthorizationCodeState extends State<AuthorizationCode> {
         children: [
           Text(
             'Nhập mã xác thực',
-            style: TextStyle(fontSize: 24),
+            style: TextStyle(fontSize: 24, color: primaryColor),
           ),
           SizedBox(height: 16),
 
           Text(
             'Nhập mã xác thực chúng tôi mới gửi qua email hoặc số điện thoại của bạn',
-            style: TextStyle(fontSize: 16, color: Color(0xFF686565)),
+            style: TextStyle(fontSize: 16, color: primaryColor),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 16),
@@ -38,7 +40,7 @@ class _AuthorizationCodeState extends State<AuthorizationCode> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(6, (index) {
               return Container(
-                width: 40,
+                width: screenWidth * 0.1,
                 height: 40,
                 margin: EdgeInsets.symmetric(horizontal: 4),
                 child: TextField(
@@ -49,8 +51,11 @@ class _AuthorizationCodeState extends State<AuthorizationCode> {
                   textAlign: TextAlign.center, // Căn giữa số nhập vào ô
                   style: TextStyle(fontSize: 18),
                   decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(0),
                     border: OutlineInputBorder(),
                     counterText: "",
+                    filled: true,
+                    fillColor: primaryColor,
                   ),
                   onChanged: (value) {
                     if (value.isNotEmpty) {
@@ -87,7 +92,7 @@ class _AuthorizationCodeState extends State<AuthorizationCode> {
               );
             },
             style: ElevatedButton.styleFrom(
-              primary: Color(0xFFE94834), // Màu RGB (233, 72, 52)
+              backgroundColor: secondaryGreen, // Màu RGB (233, 72, 52)
             ),
             child: Text('Gửi'),
           ),

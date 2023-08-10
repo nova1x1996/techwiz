@@ -267,7 +267,7 @@ class _RegisterMainState extends State<RegisterMain> {
                   ),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: buttonColor,
+                      color: primaryOrange,
                       borderRadius: BorderRadius.circular(5))),
             ),
           ),
@@ -292,7 +292,7 @@ class _RegisterMainState extends State<RegisterMain> {
                       children: [
                 TextSpan(text: 'Bạn đã có tài khoản?'),
                 TextSpan(
-                    text: ' Đăng nhập', style: TextStyle(color: buttonColor))
+                    text: ' Đăng nhập', style: TextStyle(color: primaryOrange))
               ])))
         ],
       ),
