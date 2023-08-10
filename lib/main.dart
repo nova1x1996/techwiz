@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(primarySwatch: Colors.green),
           debugShowCheckedModeBanner: false,
           title: 'Techwiz 4 Mobile',
-          initialRoute: '/Register',
+          initialRoute: '/LoginMain',
           routes: {
             '/': (context) => const DiscoveryPage(),
             '/ResetPassword': (context) => ResetPassword(),

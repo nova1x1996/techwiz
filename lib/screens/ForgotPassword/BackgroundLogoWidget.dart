@@ -31,7 +31,7 @@ class BackgroundLogoWidget extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding:  EdgeInsets.only(left: 50,right: 50,bottom: 50),
+                    padding:  EdgeInsets.only(left: 40,right: 40,bottom: 50),
                     child: bodycontent,
                   )
                 ],

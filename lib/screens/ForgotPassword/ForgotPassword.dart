@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/widgets/MauInput.dart';
 
+import '../../constants/colors.dart';
 import 'BackgroundLogoWidget.dart';
 import 'AuthorizationCode.dart';
 
@@ -22,24 +23,23 @@ class ForgotPassword extends StatelessWidget {
             children: [
               Text(
                 'Quên mật khẩu ?',
-                style: TextStyle(fontSize: 30),
+                style: TextStyle(fontSize: 30, color: primaryColor),
               ),
               SizedBox(height: 16),
 
               Text(
                 'Nhập số điện thoại hoặc email bạn đã đăng nhập',
-                style: TextStyle(fontSize: 14, color: Color(0xFF686565)),
+                style: TextStyle(fontSize: 14, color: primaryColor),
               ),
               Text(
                 'Chúng tôi sẽ gửi thông tin đặt lại mật khẩu cho bạn',
-                style: TextStyle(fontSize: 14, color: Color(0xFF686565)),
+                style: TextStyle(fontSize: 14, color: primaryColor),
               ),
               SizedBox(height: 16),
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 32),
-                child: MauInput(controller: emailController,label: "",placeholder: "So dien thoai hoac email"
-                ),
+                child: MauInput(controller: emailController,label: "",placeholder: "So dien thoai hoac email"),
               ),
               SizedBox(height: 16),
 
@@ -56,7 +56,7 @@ class ForgotPassword extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFE94834), // Màu RGB (233, 72, 52)
+                  backgroundColor: secondaryGreen, // Màu RGB (233, 72, 52)
                 ),
                 child: Text('Gửi'),
               ),

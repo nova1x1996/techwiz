@@ -12,7 +12,7 @@ Widget MauInput(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label),
+        Text(label,style: TextStyle(color: Colors.white),),
         SizedBox(
           height: 7,
         ),
@@ -32,6 +32,8 @@ Widget MauInput(
           },
           controller: controller,
           decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
               contentPadding: const EdgeInsets.all(10),
               border: const OutlineInputBorder(
                   borderSide: BorderSide(width: 1, color: Colors.black)),
