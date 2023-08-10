@@ -12,7 +12,10 @@ class ForgotPassword extends StatelessWidget {
       resizeToAvoidBottomInset: false, // Không điều chỉnh khi bàn phím hiển thị
       body: BackgroundLogoWidget(
         bodycontent: SingleChildScrollView(
+
+
           child: Column(
+
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

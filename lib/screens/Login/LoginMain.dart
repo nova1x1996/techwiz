@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../constants/colors.dart';
 import '../../providers/LoginProvider.dart';
+import '../../widgets/MauInput.dart';
+import '../ForgotPassword/BackgroundLogoWidget.dart';
 
 class LoginMain extends StatefulWidget {
   const LoginMain({super.key});
@@ -16,18 +18,12 @@ class _LoginMainState extends State<LoginMain> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: Container(
-
-        decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage("assets/images/Login/BackgroundDangNhap.png"),fit: BoxFit.fill),
-        ),
-        padding: EdgeInsets.symmetric(horizontal:30,vertical: 20),
+    return  BackgroundLogoWidget(
+      bodycontent: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 50),
         child: Column(
 crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(width: double.infinity,
-            height: 100),
 
             MauInput("Label Email","Email",txt_Email),
             MauInput("Label Password","Password",txt_Password),
@@ -62,7 +58,7 @@ crossAxisAlignment: CrossAxisAlignment.start,
 }
 Widget GachNgangCoChuOGiua(String content){
   return  Container(
-    color: Colors.white, // Màu nền cho Container
+    color: Colors.transparent, // Màu nền cho Container
     child: Row(
       children: <Widget>[
         Expanded(
@@ -87,25 +83,6 @@ Widget GachNgangCoChuOGiua(String content){
             color: Colors.black,
             thickness: 1,
           ),
-        ),
-      ],
-    ),
-  );
-}
-Widget MauInput(String label,String placeholder,TextEditingController controller){
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 15),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label),
-        SizedBox(height: 7,),
-        TextField(
-          controller: controller,
-          decoration: InputDecoration(
-
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(width: 1,color: Colors.black)),labelText: placeholder,labelStyle: TextStyle(color: Colors.black26)),
         ),
       ],
     ),
