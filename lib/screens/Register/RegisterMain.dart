@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_app/constants/colors.dart';
+import 'package:mobile_app/providers/RegisterProvider.cart.dart';
 import 'package:mobile_app/screens/ForgotPassword/BackgroundLogoWidget.dart';
 
+import '../../models/userRegister.dart';
 import '../../providers/LoginProvider.dart';
 import '../../widgets/GachNgangCoChuOGiua.dart';
 import '../../widgets/MauInput.dart';
@@ -16,31 +18,49 @@ class RegisterMain extends StatefulWidget {
 }
 
 class _RegisterMainState extends State<RegisterMain> {
-  var  txt_date;
+  bool txt_gender = false;
+  var txt_date = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
   @override
   void initState() {
-    txt_date = DateFormat('dd-MM-yyyy').format(DateTime.now());
-
     // TODO: implement initState
     super.initState();
   }
+
   TextEditingController txt_Phone = TextEditingController();
   TextEditingController txt_Fullname = TextEditingController();
   TextEditingController txt_Username = TextEditingController();
-  TextEditingController txt_Gender = TextEditingController();
-  TextEditingController txt_Dob = TextEditingController();
+
   TextEditingController txt_Address = TextEditingController();
   TextEditingController txt_Email = TextEditingController();
   TextEditingController txt_Password = TextEditingController();
   TextEditingController txt_ConfirmPassword = TextEditingController();
 
+  FocusNode fc_Phone = FocusNode();
+  FocusNode fc_FullName = FocusNode();
+  FocusNode fc_Username = FocusNode();
+  FocusNode fc_Gender = FocusNode();
+
+  FocusNode fc_Address = FocusNode();
+  FocusNode fc_Email = FocusNode();
+  FocusNode fc_Password = FocusNode();
+  FocusNode fc_ConfirmPass = FocusNode();
+
+  //Hiển thị cho người dùng chọn năm sinh
   void _showDatePicker() {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2025))
-        .then((value) => null);
+            firstDate: DateTime(1923),
+            lastDate: DateTime.now())
+        .then((value) => {
+              if (value != null)
+                {
+                  setState(() {
+                    txt_date = DateFormat('yyyy-MM-dd').format(value!);
+                  })
+                }
+            });
   }
 
   @override
@@ -52,25 +72,52 @@ class _RegisterMainState extends State<RegisterMain> {
           MauInput(
               label: "Họ tên",
               placeholder: "Nhập họ và tên đầy đủ",
-              controller: txt_Password),
+              controller: txt_Fullname,
+              currentFocus: fc_FullName,
+              context: context,
+              nextFocus: fc_Email),
           MauInput(
               label: "Email",
-              placeholder: "Nhập email của bạn",
+              placeholder: "Nhập Email của bạn",
+              currentFocus: fc_Email,
+              nextFocus: fc_Phone,
+              context: context,
               controller: txt_Email),
+
           MauInput(
               label: "Điện thoại",
               placeholder: "Nhập số điện thoại của bạn",
-              controller: txt_Password),
+              currentFocus: fc_Phone,
+              nextFocus: fc_Address,
+              context: context,
+              controller: txt_Phone),
           MauInput(
-              label: "Mật khẩu",
-              placeholder: "Nhập lại mật khẩu của bạn",
-              controller: txt_Password),
+              label: "Address",
+              placeholder: "Nhập Adddress của bạn",
+              currentFocus: fc_Address,
+              nextFocus: fc_Username,
+              context: context,
+              controller: txt_Address),
+          MauInput(
+              label: "Username",
+              placeholder: "Nhập lại username của bạn",
+              currentFocus: fc_Username,
+              nextFocus: fc_Password,
+              context: context,
+              controller: txt_Username),
           MauInput(
               label: "Nhập lại mật khẩu ",
               placeholder: "Nhập lại mật khẩu của bạn",
+              currentFocus: fc_Password,
+              nextFocus: fc_ConfirmPass,
+              context: context,
               controller: txt_Password),
+          MauInput(
+              label: "Confirm Password",
+              placeholder: "Nhập lại Confirm Password của bạn",
+              currentFocus: fc_ConfirmPass,
+              controller: txt_ConfirmPassword),
           Container(
-
             width: double.infinity,
             height: 70,
             child: Row(
@@ -90,13 +137,20 @@ class _RegisterMainState extends State<RegisterMain> {
                             width: 65,
                             height: 48,
                             decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: (!txt_gender)
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  width: 2),
                               borderRadius: BorderRadius.circular(4.0),
                               color: Colors.blue
                                   .withOpacity(0.4), // Màu nền trong suốt
                             ),
                             child: InkWell(
                               onTap: () {
-                                setState(() {});
+                                setState(() {
+                                  txt_gender = false;
+                                });
                               },
                               borderRadius: BorderRadius.circular(4.0),
                               child: Padding(
@@ -105,6 +159,8 @@ class _RegisterMainState extends State<RegisterMain> {
                                 // Điều chỉnh padding dọc
                                 child: Icon(
                                   Icons.male,
+                                  color:
+                                      (!txt_gender) ? Colors.white : null,
                                   // Màu biểu tượng
                                 ),
                               ),
@@ -116,13 +172,20 @@ class _RegisterMainState extends State<RegisterMain> {
                             width: 65,
                             height: 48,
                             decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: (txt_gender )
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  width: 2),
                               borderRadius: BorderRadius.circular(4.0),
                               color: Colors.pink
                                   .withOpacity(0.4), // Màu nền trong suốt
                             ),
                             child: InkWell(
                               onTap: () {
-                                setState(() {});
+                                setState(() {
+                                  txt_gender = true;
+                                });
                               },
                               borderRadius: BorderRadius.circular(4.0),
                               child: Padding(
@@ -131,6 +194,8 @@ class _RegisterMainState extends State<RegisterMain> {
                                 // Điều chỉnh padding dọc
                                 child: Icon(
                                   Icons.female,
+                                  color:
+                                      (txt_gender) ? Colors.white : null,
                                 ),
                               ),
                             ),
@@ -143,17 +208,32 @@ class _RegisterMainState extends State<RegisterMain> {
                 Expanded(
                     child: Column(
                   children: [
-                    Text("DoB",style: TextStyle(fontSize: 16),),
-                    Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(4)
+                    Text(
+                      "DoB",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        _showDatePicker();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(4)),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(Icons.calendar_month),
+                              Text(
+                                txt_date.toString(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ]),
+                        width: double.infinity,
+                        height: 48,
                       ),
-                      child: Text(txt_date.toString()),
-                      width: double.infinity,
-                      height: 48,
-
                     ),
                   ],
                 )),
@@ -161,7 +241,19 @@ class _RegisterMainState extends State<RegisterMain> {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              UserRegister newUser = UserRegister(
+               email:    txt_Email.text,
+               password:    txt_Password.text,
+               fullName:    txt_Fullname.text,
+               username:    txt_Username.text,
+               gender:    txt_gender,
+                phone:   txt_Phone.text,
+               dob:    txt_date,
+               address:    txt_Address.text);
+
+              Provider.of<RegisterProvider>(context,listen: false).register(newUser);
+            },
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 24),
               child: Container(
