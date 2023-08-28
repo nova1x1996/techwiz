@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/fakeData/fakeData.dart';
-
+import 'package:provider/provider.dart';
 import '../../constants/colors.dart';
+import '../../models/product.dart';
+import '../../providers/CartProviderr.dart';
+import '../../providers/PlantDataProvider.dart';
 import '../../widgets/TagLargeButton.dart';
 
 class PlantList extends StatefulWidget {
@@ -12,260 +14,364 @@ class PlantList extends StatefulWidget {
 }
 
 class _PlantListState extends State<PlantList> {
-  var listFakeData = plants;
+
+  ScrollController _scrollController = ScrollController();
+  String searchQuery = '';
+  bool sortByPrice = false;
+  bool isAscending = true;
+  bool _isLoading = false;
+
+
+  @override
+  void initState(){
+    super.initState();
+    Provider.of<PlantDataProvider>(context,listen: false).getDSProduct().then((_) {
+      listenScroll();
+    });
+
+  }
+  void listenScroll(){
+    _scrollController.addListener(() {
+      if (!_scrollController.position.outOfRange && !_isLoading && _scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        print(_scrollController.position.pixels);
+        setState(() {
+          _isLoading = true;
+        });
+        Provider.of<PlantDataProvider>(context, listen: false).getDSProductMore().then((_) {
+          setState(() {
+            _isLoading = false;
+          });
+        });
+        // Do your loading logic here
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    var listSP =
+        Provider.of<PlantDataProvider>(context, listen: false).listProduct;
     double screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          "All plants",
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          Icon(
-            Icons.search,
-            color: Colors.black,
-          )
-        ],
-      ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.068),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //Text("Plant is for room", style: testLarge_SemiBold28),
-                Row(children: [
-                  TagLargeButton(colorButton: Color(0xfffD3B398),colorTextContent: Colors.white,textContent: "Plant"),
-                  SizedBox(width: 10,),
-                  TagLargeButton(colorButton: fontColorGrey2,colorTextContent: fontColorGrey,textContent: "Access"),
-                ],),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Color(0xfffD3B398),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Text(
-                          "All",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: fontColorGrey2,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Text(
-                          "Cacti",
-                          style: TextStyle(color: fontColorGrey),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: fontColorGrey2,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Text(
-                          "Dried flowers",
-                          style: TextStyle(color: fontColorGrey),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: fontColorGrey2,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Text(
-                          "Inch",
-                          style: TextStyle(color: fontColorGrey),
-                        ),
-                      ),
-                    ],
-                  ),
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.068),
+          child: Column(
+
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value.toLowerCase();
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  prefixIcon: Icon(Icons.search),
                 ),
-                Row(
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        sortByPrice = !sortByPrice;
+                        isAscending = true;
+                        if (sortByPrice) {
+                          listSP
+                              .sort((a, b) => a.minPrice.compareTo(b.minPrice));
+                          if (!isAscending) {
+                            listSP = listSP.reversed.toList();
+                          }
+                        }
+                      });
+                    },
+                    style: ButtonStyle(
+                      // Sử dụng overlayColor để thêm viền xanh lá khi isAscending = true
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (states) {
+                          if (isAscending) {
+                            return Colors.green; // Màu viền xanh lá
+                          } else {
+                            return Colors.grey;
+                          }
+                        },
+                      ),
+                    ),
+                    child: Text('Filter By Price'),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      isAscending ? Icons.arrow_upward : Icons.arrow_downward,
+                      size: 20,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isAscending = !isAscending;
+                        if (sortByPrice ) {
+                          listSP = listSP.reversed.toList();
+                        }
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  TagLargeButton(
+                      colorButton: Colors.green,
+                      colorTextContent: Colors.white,
+                      textContent: "Plant"),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  TagLargeButton(
+                      colorButton: fontColorGrey2,
+                      colorTextContent: fontColorGrey,
+                      textContent: "Access"),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Popularity",
-                      style: TextStyle(fontSize: 12),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Text(
+                        "All",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                    SizedBox(
-                      width: 5,
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: fontColorGrey2,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Text(
+                        "Cacti",
+                        style: TextStyle(color: fontColorGrey),
+                      ),
                     ),
-                    Icon(
-                      Icons.arrow_downward,
-                      size: 12,
-                    )
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: fontColorGrey2,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Text(
+                        "Dried flowers",
+                        style: TextStyle(color: fontColorGrey),
+                      ),
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: fontColorGrey2,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Text(
+                        "Inch",
+                        style: TextStyle(color: fontColorGrey),
+                      ),
+                    ),
                   ],
                 ),
-                SizedBox(
-                  height: 25,
-                ),
-                ListView.separated(
-                  separatorBuilder: (context, index) => SizedBox(
-                    height: screenWidth * 0.086,
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Popularity",
+                    style: TextStyle(fontSize: 12),
                   ),
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: listFakeData.length,
-                  itemBuilder: (context, index) => Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Container(
-                      // width: double.infinity,
-                      padding: EdgeInsets.all(8),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: screenWidth * 0.328,
-                            height: 80,
-                            decoration: BoxDecoration(
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Icon(
+                    Icons.arrow_downward,
+                    size: 12,
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 25,
+              ),
+
+              // Plant list
+              FutureBuilder(
+                builder: (context, snapshot) {
+                  List<Product> model = [];
+                  if (snapshot.hasData) {
+                    model = snapshot.data as List<Product>;
+                  }
+                  return ListView.builder(
+
+                      itemCount: model.length,
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        var product = model[index];
+                        if (searchQuery.isNotEmpty &&
+                            (!product.name.toLowerCase().contains(searchQuery))) {
+                          return SizedBox(); // Hide if not matching search query
+                        }
+
+                        return InkWell(
+                          onTap: () {
+
+                            Navigator.pushNamed(context, "/PlantDetail", arguments: model[index]);
+                          },
+                          child: Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    "https://images.unsplash.com/reserve/bOvf94dPRxWu0u3QsPjF_tree.jpg?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2676&q=80"),
-                              ),
                             ),
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  child: Container(
-                                    padding: EdgeInsets.all(1),
-                                    child: Icon(
-                                      Icons.favorite_outline,
-                                      color: colorIconGrey,
-                                      size: 20,
-                                    ),
+                            child: Container(
+                              height: 100,
+                              padding: EdgeInsets.all(8),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 100,
+                                    height: 100,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(6),
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(model[index].productImage),
+                                      ),
                                     ),
                                   ),
-                                  bottom: 10,
-                                  right: 15,
-                                ),
-                              ],
+                                  Expanded( // Move the Expanded widget here
+                                    child: Container(
+                                      padding: EdgeInsets.only(left: 10),
+                                      height: double.infinity,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            model[index].name,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            model[index].name,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '\$${model[index].minPrice.toStringAsFixed(2)}',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      // Provider.of<CartProviderr>(
+                                                      //     context,
+                                                      //     listen: false)
+                                                      //     .removeFromCart(product);
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.all(2),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.transparent,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.remove,
+                                                        color: Colors.green,
+                                                        size: 20,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 4),
+                                                  // Consumer<CartProviderr>(
+                                                  //   builder: (context, cartProvider,
+                                                  //       child) {
+                                                  //     int quantity = cartProvider
+                                                  //         .getQuantity(product);
+                                                  //     return Text(
+                                                  //       "$quantity",
+                                                  //       style:
+                                                  //       TextStyle(fontSize: 16),
+                                                  //     );
+                                                  //   },
+                                                  // ),
+                                                  SizedBox(width: 4),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      // Provider.of<CartProviderr>(
+                                                      //     context,
+                                                      //     listen: false)
+                                                      //     .addToCart(product);
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.all(2),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.transparent,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        color: Colors.green,
+                                                        size: 20,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          SizedBox(width: screenWidth * 0.065),
-                          Container(
-                            height: 90,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  listFakeData[index].title,
-                                  style: textMedium_Bold15,
-                                ),
-                                Text(
-                                  listFakeData[index].subtitle,
-                                  style: textMedium_Grey13,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(listFakeData[index].price),
-                                    SizedBox(width: screenWidth * 0.086),
-                                    Row(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            // Handle subtract operation
-                                          },
-                                          child: Container(
-                                            width: 23,
-                                            height: 23,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black.withOpacity(0.2),
-                                                  blurRadius: 2,
-                                                  offset: Offset(0, 2),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "-",
-                                                style: TextStyle(fontSize: 14),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: 10),
-                                        Container(
-                                          width: 19,
-                                          height: 19,
-                                          child: Center(
-                                            child: Text(
-                                              "0",
-                                              style: TextStyle(fontSize: 14),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: 10),
-                                        GestureDetector(
-                                          onTap: () {
-                                            // Handle add operation
-                                          },
-                                          child: Container(
-                                            width: 23,
-                                            height: 23,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black.withOpacity(0.2),
-                                                  blurRadius: 2,
-                                                  offset: Offset(0, 2),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "+",
-                                                style: TextStyle(fontSize: 14),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 50),
-              ],
-            ),
+                        );
+                      },
+                    );
+
+                },
+               /* future: Provider.of<PlantDataProvider>(context).getDSProduct(),*/
+                future: Provider.of<PlantDataProvider>(context).getList(),
+                initialData: listSP,
+              ),
+
+
+              SizedBox(height: 50),
+            ],
           ),
         ),
       ),

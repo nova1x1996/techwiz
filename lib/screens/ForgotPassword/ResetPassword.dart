@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/screens/ForgotPassword/main.dart';
 import 'package:mobile_app/constants/colors.dart';
 import 'package:mobile_app/widgets/MauInput.dart';
-
-import '../StoreProduct/StoreApp.dart';
 import 'BackgroundLogoWidget.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -26,7 +25,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Đặt lại mật khẩu',
+              'Reset Password',
               style: TextStyle(fontSize: 30, color: primaryColor),
             ),
             SizedBox(height: 16),
@@ -36,8 +35,8 @@ class _ResetPasswordState extends State<ResetPassword> {
               padding: EdgeInsets.symmetric(horizontal: 32),
               child: MauInput(
                 controller: passwordController,
-                label: 'Mật khẩu mới',
-                placeholder: 'Mật khẩu mới',
+                label: 'New Password',
+                placeholder: 'New Password',
               ),
             ),
             SizedBox(height: 16),
@@ -47,8 +46,8 @@ class _ResetPasswordState extends State<ResetPassword> {
               padding: EdgeInsets.symmetric(horizontal: 32),
               child: MauInput(
                 controller: confirmPasswordController,
-                label: 'Nhập lại mật khẩu mới',
-                placeholder: 'Nhập lại mật khẩu mới',
+                label: 'Confirm Password',
+                placeholder: 'Confirm Password',
                 // errorText: errorText;
               ),
             ),
@@ -65,12 +64,12 @@ class _ResetPasswordState extends State<ResetPassword> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => StoreApp(),
+                      builder: (context) => QuenMatKhauApp(),
                     ),
                   );
                 } else {
                   setState(() {
-                    errorText = 'Mật khẩu không trùng khớp.';
+                    errorText = 'Password Does Not Match';
                   });
                 }
               },
@@ -78,7 +77,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 backgroundColor: secondaryGreen,
                 minimumSize: Size(350.507 - 64, 48), // Màu RGB (233, 72, 52)
               ),
-              child: Text('Xác nhận'),
+              child: Text('Confirm'),
             ),
             SizedBox(height: 16),
           ],

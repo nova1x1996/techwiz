@@ -2,11 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_app/providers/AccountProvider.dart';
 import 'package:mobile_app/screens/Home/HomeMain.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/urlAPI.dart';
 import '../services/LoginService.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/ExampleSnackbar.dart';
 
 class LoginProvider extends ChangeNotifier {
   bool _Loading = false;
@@ -33,44 +38,48 @@ class LoginProvider extends ChangeNotifier {
       setLoading(false);
       if (respone.statusCode == 200) {
         var responeMap = json.decode(respone.body) as Map;
-        var a = respone.body;
         var accessToken = responeMap["accessToken"];
         var refreshToken = responeMap["refreshToken"];
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('accessToken', accessToken);
+        await prefs.setString('refreshToken', refreshToken);
 
-        Navigator.pushNamed(context, '/HomeMain');
+
+       await Provider.of<AccountProvider>(context, listen: false)
+            .getInforAccount();
+        Navigator.pushNamed(context, '/Main');
+
       } else if (respone.statusCode == 404) {
         //Tài khoản hiện mật khẩu không tồn tại
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.'),
-            duration: Duration(seconds: 2), // Đặt thời gian hiển thị
-          ),
-        );
+        setLoading(false);
+        SnackBarShowError(context,"Invalid password or username.");
         return;
-        // return  showDialog(
-        //     context: context,
-        //     builder: (BuildContext context) {
-        //       return AlertDialog(
-        //         title: Text('Thông báo'),
-        //         content:
-        //             Text('Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.'),
-        //         actions: <Widget>[
-        //           TextButton(
-        //             child: Text('OK'),
-        //             onPressed: () {
-        //               Navigator.of(context).pop(); // Đóng hộp thoại
-        //             },
-        //           ),
-        //         ],
-        //       );
-        //     });
       }
       setLoading(false);
     } catch (e) {
       setLoading(false);
+      SnackBarShowError(context,"Switch to a different IP or a different WiFi");
       //Xuất hiện Popup " Đổi IP khác Wifi khác cho người dùngs"
       print(e);
     }
+  }
+  Future<void> dangnhapGoogle(String mail,String pass,BuildContext conext) async{
+    GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+    _googleSignIn.signIn().then((result){
+      result?.authentication.then((googleKey){
+        print(googleKey.accessToken);
+        print(googleKey.idToken);
+        print(_googleSignIn.currentUser?.displayName);
+      }).catchError((err){
+        print('inner error');
+      });
+    }).catchError((err){
+      print('error occured');
+    });
   }
 }

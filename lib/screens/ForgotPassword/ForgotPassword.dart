@@ -22,24 +22,24 @@ class ForgotPassword extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Quên mật khẩu ?',
+                'Forgot Password?',
                 style: TextStyle(fontSize: 30, color: primaryColor),
               ),
               SizedBox(height: 16),
 
               Text(
-                'Nhập số điện thoại hoặc email bạn đã đăng nhập',
+                'Enter the phone number or email you signed in',
                 style: TextStyle(fontSize: 14, color: primaryColor),
               ),
               Text(
-                'Chúng tôi sẽ gửi thông tin đặt lại mật khẩu cho bạn',
+                'We will send you password reset information',
                 style: TextStyle(fontSize: 14, color: primaryColor),
               ),
               SizedBox(height: 16),
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 32),
-                child: MauInput(controller: emailController,label: "",placeholder: "So dien thoai hoac email"),
+                child: MauInput(controller: emailController,label: "",placeholder: "Phone Number Or Email"),
               ),
               SizedBox(height: 16),
 
@@ -58,7 +58,7 @@ class ForgotPassword extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: secondaryGreen, // Màu RGB (233, 72, 52)
                 ),
-                child: Text('Gửi'),
+                child: Text('Send'),
               ),
               SizedBox(height: 16),
             ],

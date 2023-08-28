@@ -24,13 +24,13 @@ class _AuthorizationCodeState extends State<AuthorizationCode> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'Nhập mã xác thực',
+            'Enter Verify Code',
             style: TextStyle(fontSize: 24, color: primaryColor),
           ),
           SizedBox(height: 16),
 
           Text(
-            'Nhập mã xác thực chúng tôi mới gửi qua email hoặc số điện thoại của bạn',
+            'Enter The Verification Code We Just Sent Via Your Email Or Phone Number',
             style: TextStyle(fontSize: 16, color: primaryColor),
             textAlign: TextAlign.center,
           ),
@@ -94,7 +94,7 @@ class _AuthorizationCodeState extends State<AuthorizationCode> {
             style: ElevatedButton.styleFrom(
               backgroundColor: secondaryGreen, // Màu RGB (233, 72, 52)
             ),
-            child: Text('Gửi'),
+            child: Text('Send'),
           ),
           SizedBox(height: 16),
         ],

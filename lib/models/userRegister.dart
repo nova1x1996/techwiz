@@ -1,5 +1,3 @@
-import 'package:mobile_app/models/product.dart';
-
 class UserRegister {
   final String password;
   final String email;

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/providers/LAccessProvider.dart';
 import 'package:mobile_app/screens/FormMauTemplate/BackgroundHomePage.dart';
 import 'package:mobile_app/screens/Login/LoginMain.dart';
+import 'package:mobile_app/test/test.dart';
 import 'package:mobile_app/widgets/TagSmallButton.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
+import '../../providers/ListDataHomeProvider.dart';
+import '../../providers/PlantDataProvider.dart';
+import '../FavoriteProduct/FavoriteList.dart';
 
 class HomeMain extends StatefulWidget {
   const HomeMain({super.key});
@@ -17,120 +23,128 @@ class _HomeMainState extends State<HomeMain> {
   Widget build(BuildContext context) {
     var resHeight = MediaQuery.of(context).size.height;
     var resWidth = MediaQuery.of(context).size.width;
-    return BackgroundHomePage(
-        contentBody: SingleChildScrollView(
+    return SingleChildScrollView(
           child: Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: resHeight * 0.060,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) => Container(
-                  width: resWidth * 0.127,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.circular(17)),
-                ),
-                separatorBuilder: (context, index) => SizedBox(
-                  width: 40,
-                ),
-              ),
-            ),
+
             Padding(
               padding: EdgeInsets.symmetric(vertical: 20),
               child: Container(
                 width: double.infinity,
                 height: 180,
                 decoration: BoxDecoration(
-                    color: Colors.amber, borderRadius: BorderRadius.circular(15)),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.asset(
+                    'lib/assets/images/plantshop.png', // Thay đổi đường dẫn tới hình ảnh của bạn
+                    width: double.infinity,
+                    height: 180,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
+
             Row(
               children: [
                 Text(
-                  "Đề xuất cho bạn",
+                  "Popular Plants!",
                   style: textMedium_Medium18,
                 ),
                 SizedBox(
                   width: 10,
                 ),
-                Icon(
-                  Icons.arrow_circle_right_rounded,
-                  color: Color(0xfffF07869),
+                GestureDetector(
+                  child: Icon(
+                    Icons.arrow_circle_right_rounded,
+                    color: Colors.green,
+                  ),
                 ),
               ],
             ),
             SizedBox(height: 15),
             Container(
               height: 120,
-              child: ListView.separated(scrollDirection: Axis.horizontal,itemBuilder: (context, index) =>    Container(
-                padding: EdgeInsets.all(5),
-                width: 320,
-                height: 120,
-                decoration: BoxDecoration(
-                    color: ColorSlibarHomeMain,
-                    borderRadius: BorderRadius.circular(12)),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 90,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Consumer<ListDataHomeProvider>(
+                builder: (context, listDataProvider, child) {
+                  final productList = listDataProvider.productList;
+                  return ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final product = productList[index];
+                      return Container(
+
+                        width: 320,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey)
+                        ),
+                        child: Row(
                           children: [
-                            Text(
-                              "Bio Petie Spa",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xfffFF0000)),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+
+                              child: Image.network(
+
+                                product.productImage, // Thay đổi URL tới hình ảnh của bạn
+                                width: 90,
+                                fit: BoxFit.cover, // Tùy chỉnh theo ý muốn
+                              ),
                             ),
-                            Text(
-                              "72 Đường số 9, Tân Quy, Quận 7,Thành phố Hồ Chí Minh",
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
+
+                            Expanded(
+                              child: Padding(
+                                padding:
+                                EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Icon(Icons.star),
-                                    Text("4.7"),
+                                    Text(
+                                      product.name, // Thay thế bằng dữ liệu thực tế
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
+
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+
+                                            Text("\$"+product.minPrice.toStringAsFixed(2) + "-" + product.maxPrice!.toStringAsFixed(2),style: TextStyle(fontSize: 16),), // Thay thế bằng dữ liệu thực tế
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Icon(Icons.add_location),
-                                    Text("1.2 km")
-                                  ],
-                                ),
-                              ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ), separatorBuilder: (context, index) => SizedBox(width: 12,), itemCount: 5),
+                      );
+                    },
+                    separatorBuilder: (context, index) => SizedBox(width: 12),
+                    itemCount: productList.length,
+                  );
+                },
+              ),
             ),
-            SizedBox(height: 15),
+             SizedBox(height: 30),
             Row(
               children: [
                 Text(
-                  "Ưu dai cho bạn",
+                  "Popular Accessories!",
                   style: textMedium_Medium18,
                 ),
                 SizedBox(
@@ -138,22 +152,82 @@ class _HomeMainState extends State<HomeMain> {
                 ),
                 Icon(
                   Icons.arrow_circle_right_rounded,
-                  color: Color(0xfffF07869),
+                  color: Colors.green,
                 ),
               ],
             ),
             SizedBox(height: 15),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(width: 200,height: 110,decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.greenAccent,
-                ),),
-                SizedBox(height: 12,),
-                Text("Thả gả mua sắm",style: TextStyle(fontSize: 14),),
-                Text("Khai trương hấp dẫn")
-              ],
+            Container(
+              height: 120,
+              child: Consumer<LAccessProvider>(
+                builder: (context, listDataProvider, child) {
+                  final productList = listDataProvider.productList;
+                  return ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final product = productList[index];
+                      return Container(
+
+                        width: 320,
+                        height: 120,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey)
+                        ),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+
+                              child: Image.network(
+
+                                product.productImage, // Thay đổi URL tới hình ảnh của bạn
+                                width: 90,
+                                fit: BoxFit.cover, // Tùy chỉnh theo ý muốn
+                              ),
+                            ),
+
+                            Expanded(
+                              child: Padding(
+                                padding:
+                                EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      product.name, // Thay thế bằng dữ liệu thực tế
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                         ),
+                                    ),
+
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+
+                                            Text("Min Price: \$"+product.minPrice.toStringAsFixed(2) ,style: TextStyle(fontSize: 16), ), // Thay thế bằng dữ liệu thực tế
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) => SizedBox(width: 12),
+                    itemCount: productList.length,
+                  );
+                },
+              ),
             ),
             // Container(
             //   width: double.infinity,
@@ -171,7 +245,7 @@ class _HomeMainState extends State<HomeMain> {
             //   ),
             // ),
           ],
-      ),
+
     ),
         ));
   }

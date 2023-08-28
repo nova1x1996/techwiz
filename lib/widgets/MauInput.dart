@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/validate/validateAllFields.dart';
 
 Widget MauInput(
     {required String label,
@@ -6,13 +7,15 @@ Widget MauInput(
     required TextEditingController controller,
     FocusNode? nextFocus,
     FocusNode? currentFocus,
-    BuildContext? context}) {
+    BuildContext? context,
+    }) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 15),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,style: TextStyle(color: Colors.white),),
+
+        Text(label,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
         SizedBox(
           height: 7,
         ),
@@ -32,14 +35,17 @@ Widget MauInput(
           },
           controller: controller,
           decoration: InputDecoration(
+              floatingLabelBehavior: FloatingLabelBehavior.never,
             filled: true,
             fillColor: Colors.white,
               contentPadding: const EdgeInsets.all(10),
               border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
                   borderSide: BorderSide(width: 1, color: Colors.black)),
               labelText: placeholder,
               labelStyle: TextStyle(color: Colors.black26)),
         ),
+
       ],
     ),
   );
@@ -53,3 +59,4 @@ void _scrollTo(FocusNode focusNode) {
     duration: Duration(milliseconds: 300),
   );
 }
+
